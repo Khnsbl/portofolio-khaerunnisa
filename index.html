@@ -178,7 +178,6 @@
     .mq-item:hover { transform: translateY(-8px) scale(1.18); filter: opacity(1) drop-shadow(0 10px 22px rgba(0,0,0,0.14)); }
     .mq-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: linear-gradient(135deg, #f77fbe, #7aaa52); opacity: 0.35; }
 
-    /* MARQUEE ICON CARDS */
     .mq-icon-card { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
     .mq-icon-box { width: 54px; height: 54px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; line-height: 1; box-shadow: 0 4px 16px rgba(0,0,0,0.1); overflow: hidden; }
     .mq-icon-box img { width: 100%; height: 100%; object-fit: cover; }
@@ -206,37 +205,331 @@
 
     /* CERTIFICATES */
     #certificates { padding: 6rem 0; background: var(--grad-subtle); }
-    .cert-card { background: white; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(122,170,82,0.15); box-shadow: var(--shadow-soft); transition: all 0.4s ease; display: flex; }
-    .cert-card:hover { transform: translateX(6px); box-shadow: var(--shadow-matcha); border-color: rgba(122,170,82,0.4); }
-    .cert-accent { width: 6px; flex-shrink: 0; background: var(--grad-matcha); }
-    .cert-img { width: 90px; flex-shrink: 0; background: var(--matcha-100); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .cert-img img { width: 100%; height: 100%; object-fit: cover; }
-    .cert-img-placeholder { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 1.8rem; opacity: 0.4; }
-    .cert-body { padding: 1.1rem 1.35rem; flex: 1; }
-    .cert-issuer { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--matcha-500); margin-bottom: 0.25rem; }
-    .cert-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 0.25rem; }
-    .cert-date { font-size: 0.75rem; color: var(--muted); }
+    .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 820px; margin: 0 auto; }
+    @media (max-width: 640px) { .cert-grid { grid-template-columns: 1fr; max-width: 400px; } }
+    .cert-item { display: flex; flex-direction: column; gap: 0.55rem; }
+    .cert-title-above { font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; color: var(--dark); line-height: 1.3; padding: 0 0.2rem; display: flex; align-items: center; gap: 0.45rem; }
+    .cert-title-above::before { content: ''; display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .cert-title-above.pink-dot::before  { background: var(--grad-pink); }
+    .cert-title-above.matcha-dot::before { background: var(--grad-matcha); }
+    .cert-photo-card { position: relative; border-radius: 16px; overflow: hidden; width: 100%; aspect-ratio: 16 / 11; cursor: pointer; transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease; }
+    .cert-photo-card:hover { transform: translateY(-5px) scale(1.01); }
+    .cert-photo-card img.cert-photo { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform 0.6s ease; }
+    .cert-photo-card:hover img.cert-photo { transform: scale(1.04); }
+    .cert-overlay { position: absolute; inset: 0; pointer-events: none; }
+    .cert-overlay-pink   { background: linear-gradient(to top, rgba(60,20,40,0.78) 0%, rgba(60,20,40,0.18) 50%, transparent 100%); }
+    .cert-overlay-matcha { background: linear-gradient(to top, rgba(28,44,20,0.82) 0%, rgba(28,44,20,0.18) 50%, transparent 100%); }
+    .cert-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 0.9rem 1rem 0.85rem; color: #fff; }
+    .cert-tag-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; margin-bottom: 0.35rem; }
+    .cert-tag-pill.pink   { background: rgba(255,173,210,0.28); border: 1px solid rgba(255,173,210,0.5); color: #ffd6e8; }
+    .cert-tag-pill.matcha { background: rgba(168,200,128,0.25); border: 1px solid rgba(168,200,128,0.45); color: #c8e4a8; }
+    .cert-issuer-name { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.92); margin-bottom: 0.12rem; }
+    .cert-date-row { display: flex; align-items: center; justify-content: space-between; }
+    .cert-date-txt { font-size: 0.65rem; color: rgba(255,255,255,0.6); font-weight: 300; }
+    .cert-verified-badge { font-size: 8px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); }
 
-    /* CONTACT */
-    #contact { padding: 6rem 0; background: var(--dark); position: relative; overflow: hidden; }
-    #contact::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 10% 50%, rgba(247,127,190,0.12) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 90% 50%, rgba(122,170,82,0.1) 0%, transparent 60%); }
-    #contact .section-label { color: var(--pink-300); }
-    #contact .section-label::before { background: var(--grad-pink); }
-    #contact .section-title { color: white; }
-    .contact-desc { color: rgba(255,255,255,0.55); font-size: 0.95rem; line-height: 1.8; font-weight: 300; max-width: 460px; }
-    .contact-link { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; padding: 1.1rem 1.35rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); transition: all 0.3s ease; margin-bottom: 0.65rem; }
-    .contact-link:hover { background: rgba(247,127,190,0.1); border-color: rgba(247,127,190,0.3); transform: translateX(8px); }
-    .contact-link-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-    .contact-link-text { flex: 1; }
-    .contact-link-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); font-weight: 500; letter-spacing: 0.05em; }
-    .contact-link-value { font-size: 0.9rem; color: white; font-weight: 600; }
-    .contact-link-arrow { color: rgba(255,255,255,0.3); transition: all 0.3s; }
-    .contact-link:hover .contact-link-arrow { color: var(--pink-300); transform: translateX(4px); }
-    .contact-greeting { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem,5vw,5rem); font-weight: 900; line-height: 1; color: rgba(255,255,255,0.06); letter-spacing: -0.03em; position: absolute; bottom: 2rem; right: 2rem; pointer-events: none; user-select: none; }
+    /* ============================================================
+       CONTACT — Premium Redesign
+       ============================================================ */
+    #contact {
+      padding: 7rem 0;
+      background: #0f0f1a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient background layers */
+    #contact::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 60% at 5% 40%, rgba(235,95,160,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 50% at 95% 60%, rgba(122,170,82,0.1) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 40% at 50% 10%, rgba(247,127,190,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Decorative grid lines */
+    #contact::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(247,127,190,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247,127,190,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .contact-inner { position: relative; z-index: 2; }
+
+    /* Left column */
+    .contact-left-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pink-400);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.8rem;
+    }
+    .contact-left-label::before {
+      content: '';
+      width: 22px;
+      height: 2px;
+      background: var(--grad-pink);
+      border-radius: 2px;
+    }
+
+    .contact-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      margin-bottom: 1.2rem;
+    }
+    .contact-heading .c-accent {
+      background: var(--grad-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-tagline {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.8;
+      font-weight: 300;
+      max-width: 380px;
+      margin-bottom: 2.2rem;
+    }
+
+    /* Availability chip */
+    .contact-avail-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: rgba(122,170,82,0.12);
+      border: 1px solid rgba(122,170,82,0.3);
+      border-radius: 100px;
+      padding: 0.45rem 1rem;
+      margin-bottom: 2.2rem;
+    }
+    .avail-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--matcha-400);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .avail-pulse::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 1.5px solid var(--matcha-400);
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    @keyframes pulse-ring {
+      0% { opacity: 0.8; transform: scale(1); }
+      100% { opacity: 0; transform: scale(2.2); }
+    }
+    .avail-text {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--matcha-300);
+      letter-spacing: 0.04em;
+    }
+
+    /* Social icons */
+    .contact-socials {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: 0.5rem;
+    }
+    .social-icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .social-icon-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--grad-pink);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .social-icon-btn:hover::before { opacity: 1; }
+    .social-icon-btn:hover { color: white; border-color: transparent; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(235,95,160,0.3); }
+    .social-icon-btn svg { position: relative; z-index: 1; }
+
+    /* Right column — contact cards */
+    .contact-cards-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 1.25rem;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
+      cursor: pointer;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .contact-card.card-email::before   { background: linear-gradient(135deg, rgba(235,95,160,0.12), rgba(247,127,190,0.06)); }
+    .contact-card.card-wa::before      { background: linear-gradient(135deg, rgba(37,211,102,0.1), rgba(37,211,102,0.04)); }
+    .contact-card.card-ig::before      { background: linear-gradient(135deg, rgba(193,53,132,0.12), rgba(253,29,29,0.06)); }
+    .contact-card.card-li::before      { background: linear-gradient(135deg, rgba(0,119,181,0.12), rgba(0,119,181,0.05)); }
+
+    .contact-card:hover {
+      transform: translateX(6px);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .contact-card:hover::before { opacity: 1; }
+
+    /* Sheen effect on hover */
+    .contact-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      transition: left 0.5s ease;
+    }
+    .contact-card:hover::after { left: 140%; }
+
+    /* Icon box */
+    .contact-card-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .icon-email   { background: linear-gradient(135deg, rgba(235,95,160,0.25), rgba(214,58,132,0.15)); border: 1px solid rgba(235,95,160,0.3); }
+    .icon-wa      { background: linear-gradient(135deg, rgba(37,211,102,0.22), rgba(37,211,102,0.1)); border: 1px solid rgba(37,211,102,0.3); }
+    .icon-ig      { background: linear-gradient(135deg, rgba(193,53,132,0.22), rgba(253,29,29,0.12)); border: 1px solid rgba(193,53,132,0.35); }
+    .icon-li      { background: linear-gradient(135deg, rgba(0,119,181,0.22), rgba(0,119,181,0.1)); border: 1px solid rgba(0,119,181,0.3); }
+
+    /* Text inside card */
+    .contact-card-text { flex: 1; position: relative; z-index: 1; }
+    .contact-card-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0.2rem;
+    }
+    .contact-card-value {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: 0.01em;
+    }
+
+    /* Arrow */
+    .contact-card-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.25);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+    .contact-card:hover .contact-card-arrow {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.7);
+      transform: translateX(3px);
+    }
+
+    /* Big watermark text */
+    .contact-watermark {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 8rem);
+      font-weight: 900;
+      line-height: 1;
+      color: rgba(255,255,255,0.025);
+      letter-spacing: -0.04em;
+      position: absolute;
+      bottom: 1.5rem;
+      right: 2rem;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    /* Decorative floating orbs */
+    .contact-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(235,95,160,0.18), transparent 70%);
+      top: -80px; left: -60px;
+    }
+    .orb-2 {
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(122,170,82,0.15), transparent 70%);
+      bottom: -50px; right: 80px;
+    }
+    .orb-3 {
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(100,80,200,0.12), transparent 70%);
+      top: 40%; right: -40px;
+    }
 
     /* FOOTER */
-    footer { background: #111122; padding: 1.75rem 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
-    footer p { color: rgba(255,255,255,0.25); font-size: 0.8rem; }
+    footer { background: #070710; padding: 1.75rem 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); }
+    footer p { color: rgba(255,255,255,0.2); font-size: 0.8rem; }
     footer span { background: var(--grad-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
 
     /* SCROLL PROGRESS */
@@ -253,8 +546,6 @@
       .hero-photo-ring { width: 268px; height: 268px; }
       .hero-badge.badge-1 { left: 0; bottom: 8px; }
       .hero-badge.badge-2 { right: 0; top: 8px; }
-      .cert-card { flex-direction: column; }
-      .cert-img { width: 100%; height: 90px; }
       .hero-stats { gap: 1.2rem; }
       .about-hello { font-size: 5rem; top: 0.5rem; }
       .about-photo-frame { width: 150px; height: 188px; }
@@ -262,6 +553,8 @@
       .about-main-card { padding: 1.4rem; }
       .about-photo-wrap { align-items: center; }
       .marquee-outer::before, .marquee-outer::after { width: 50px; }
+      .contact-card { padding: 0.9rem 1rem; }
+      .contact-card-value { font-size: 0.8rem; }
     }
 
     /* ANIMATIONS */
@@ -278,42 +571,6 @@
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="scroll-progress" id="scrollProgress"></div>
-
-<!-- ==================== SVG DEFS (logo resmi) ==================== -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <defs>
-    <!-- CANVA: huruf C dengan gradient resmi -->
-    <linearGradient id="canva-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00C4CC"/>
-      <stop offset="50%" stop-color="#7D2AE8"/>
-      <stop offset="100%" stop-color="#00C4CC"/>
-    </linearGradient>
-
-    <!-- CAPCUT gradient -->
-    <linearGradient id="capcut-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#000000"/>
-      <stop offset="100%" stop-color="#1a1a1a"/>
-    </linearGradient>
-
-    <!-- TABLEPLUS gradient -->
-    <linearGradient id="tp-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF6B35"/>
-      <stop offset="100%" stop-color="#F7C59F"/>
-    </linearGradient>
-
-    <!-- LARAVEL gradient -->
-    <linearGradient id="laravel-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF2D20"/>
-      <stop offset="100%" stop-color="#FF6B63"/>
-    </linearGradient>
-
-    <!-- VSCODE gradient -->
-    <linearGradient id="vscode-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#0065A9"/>
-      <stop offset="100%" stop-color="#007ACC"/>
-    </linearGradient>
-  </defs>
-</svg>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg">
@@ -376,14 +633,14 @@
             <div class="badge-dot"></div>
             <div>
               <div style="font-size:0.65rem;color:var(--muted);font-weight:500">Status</div>
-              <div style="color:var(--dark);font-size:0.78rem;">Open to Opportunities</div>
+              <div style="color:var(--dark);font-size:0.78rem;">Open to Work</div>
             </div>
           </div>
           <div class="hero-badge badge-2">
             <div class="badge-dot green"></div>
             <div>
               <div style="font-size:0.65rem;color:var(--muted);font-weight:500">Lokasi</div>
-              <div style="color:var(--dark);font-size:0.78rem;">Indonesia 🇮🇩</div>
+              <div style="color:var(--dark);font-size:0.78rem;">Bogor</div>
             </div>
           </div>
         </div>
@@ -427,62 +684,43 @@
             Hai aku <strong>Khaerunnisa Salsabila</strong>, Gabungan antara orang yang suka bikin desain bersih di figma dan orang mikirin "gimana biar orang mau klik iklan ini" sebagai UI/UX Designer & Digital Marketing kerjaan aku itu nyambungin antara kebutuhan user dan tujuan bisnis. Jadi hasilnya ga cuman enak dilihat tetapi juga bantu brand tumbuh.</p>
           <div class="about-card-title">Update Skill</div>
           <div class="about-skill-pills">
-
-            <!-- Canva -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/dfb96cc174513093cd6ed61489ccb750.svg" alt="Canva" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/dfb96cc174513093cd6ed61489ccb750.svg" alt="Canva"></div>
               Canva
             </div>
-
-            <!-- CapCut -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/Capcut-Logo-Png-Vector.svg-.png" alt="CapCut" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/Capcut-Logo-Png-Vector.svg-.png" alt="CapCut"></div>
               CapCut
             </div>
-
-            <!-- Figma -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/Figma-logo.svg.png" alt="Figma" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/Figma-logo.svg.png" alt="Figma"></div>
               Figma
             </div>
-
-            <!-- GitHub -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/25231.png" alt="GitHub" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/25231.png" alt="GitHub"></div>
               GitHub
             </div>
-
-            <!-- VS Code -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/Visual_Studio_Code_1.35_icon.svg.png" alt="VS Code" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/Visual_Studio_Code_1.35_icon.svg.png" alt="VS Code"></div>
               VS Code
             </div>
-
-            <!-- SEO / Google -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/pngtree-google-seo-icon-vector-png-image_9183334.png" alt="SEO" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/pngtree-google-seo-icon-vector-png-image_9183334.png" alt="SEO"></div>
               SEO
             </div>
-
-            <!-- MySQL -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/5968313.png" alt="MySQL" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/5968313.png" alt="MySQL"></div>
               MySQL
             </div>
-
-            <!-- TablePlus -->
             <div class="about-skill-pill">
-              <div class="pill-icon"><img src="img/apple-icon.png" alt="TablePlus" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/apple-icon.png" alt="TablePlus"></div>
               TablePlus
             </div>
-
-            <!-- Laravel -->
             <div class="about-skill-pill still-learning">
-              <div class="pill-icon"><img src="img/Laravel.svg.png" alt="Laravel" style="width:22px;height:22px;object-fit:contain;border-radius:5px;"></div>
+              <div class="pill-icon"><img src="img/Laravel.svg.png" alt="Laravel"></div>
               Laravel
               <span class="still-tag">still learning</span>
             </div>
-
           </div>
 
           <div class="about-bottom-grid">
@@ -522,203 +760,43 @@
   </div>
   <div class="marquee-outer">
     <div class="marquee-track">
-
-      <!-- ===== SET 1 ===== -->
-
-      <!-- Canva -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/dfb96cc174513093cd6ed61489ccb750.svg" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">Canva</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/dfb96cc174513093cd6ed61489ccb750.svg" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">Canva</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- CapCut -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/Capcut-Logo-Png-Vector.svg-.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">CapCut</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/Capcut-Logo-Png-Vector.svg-.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">CapCut</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- Figma -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#1E1E1E;">
-            <img src="img/Figma-logo.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">Figma</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#1E1E1E;"><img src="img/Figma-logo.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">Figma</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- GitHub -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/25231.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">GitHub</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/25231.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">GitHub</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- VS Code -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <!-- VS Code official logo: terdiri dari 4 bagian puzzling -->
-          <div class="mq-icon-box" style="background:transparent;box-shadow:none;">
-            <img src="img/Visual_Studio_Code_1.35_icon.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">VS Code</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:transparent;box-shadow:none;"><img src="img/Visual_Studio_Code_1.35_icon.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">VS Code</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- MySQL -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/5968313.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">MySQL</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/5968313.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">MySQL</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- TablePlus -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <!-- TablePlus: logo gajah oranye resmi -->
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/apple-icon.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">TablePlus</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/apple-icon.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">TablePlus</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- Laravel -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <!-- Laravel: logo resmi (huruf L dengan ornament khas) -->
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/Laravel.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">Laravel</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/Laravel.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">Laravel</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- SEO / Google -->
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:white;border:1.5px solid #e8e8e8;">
-            <img src="img/pngtree-google-seo-icon-vector-png-image_9183334.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">SEO</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:white;border:1.5px solid #e8e8e8;"><img src="img/pngtree-google-seo-icon-vector-png-image_9183334.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">SEO</span></div></div>
       <div class="mq-dot"></div>
-
-      <!-- ===== SET 2 (duplicate for seamless loop) ===== -->
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/dfb96cc174513093cd6ed61489ccb750.svg" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">Canva</span>
-        </div>
-      </div>
+      <!-- duplicate -->
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/dfb96cc174513093cd6ed61489ccb750.svg" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">Canva</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/Capcut-Logo-Png-Vector.svg-.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">CapCut</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/Capcut-Logo-Png-Vector.svg-.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">CapCut</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#1E1E1E;">
-            <img src="img/Figma-logo.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">Figma</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#1E1E1E;"><img src="img/Figma-logo.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">Figma</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/25231.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">GitHub</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/25231.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">GitHub</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:transparent;box-shadow:none;">
-            <img src="img/Visual_Studio_Code_1.35_icon.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">VS Code</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:transparent;box-shadow:none;"><img src="img/Visual_Studio_Code_1.35_icon.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">VS Code</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/5968313.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">MySQL</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/5968313.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">MySQL</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/apple-icon.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">TablePlus</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/apple-icon.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">TablePlus</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:#ffffff;">
-            <img src="img/Laravel.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">Laravel</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:#ffffff;"><img src="img/Laravel.svg.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">Laravel</span></div></div>
       <div class="mq-dot"></div>
-
-      <div class="mq-item">
-        <div class="mq-icon-card">
-          <div class="mq-icon-box" style="background:white;border:1.5px solid #e8e8e8;">
-            <img src="img/pngtree-google-seo-icon-vector-png-image_9183334.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;">
-          </div>
-          <span class="mq-icon-label">SEO</span>
-        </div>
-      </div>
+      <div class="mq-item"><div class="mq-icon-card"><div class="mq-icon-box" style="background:white;border:1.5px solid #e8e8e8;"><img src="img/pngtree-google-seo-icon-vector-png-image_9183334.png" alt="logo" style="width:100%;height:100%;object-fit:contain;padding:6px;"></div><span class="mq-icon-label">SEO</span></div></div>
       <div class="mq-dot"></div>
-
     </div>
   </div>
 </section>
@@ -740,16 +818,15 @@
         <div class="project-card">
           <div class="project-img">
             <div class="project-img-placeholder">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
               <span><img src="img/Websitenya.png" alt=""></span>
             </div>
             <div class="project-overlay"><a href="https://www.figma.com/design/eIFeCew3wAdsjCxQGymntJ/WEBSITE-DIFIA?m=auto&t=Mxy1h6RIMx3Tw53O-6" class="project-link">Lihat →</a></div>
           </div>
           <div class="project-body">
-            <div class="project-tag">Web Development</div>
-            <div class="project-title">Nama Projek 1</div>
-            <p class="project-desc">Deskripsi singkat projek kamu. Ceritakan apa yang dibuat dan untuk siapa.</p>
-            <div class="project-tech"><span class="tech-pill">Laravel</span><span class="tech-pill">MySQL</span><span class="tech-pill">Figma</span></div>
+            <div class="project-tag">UI/UX Design</div>
+            <div class="project-title">E-commerce Website Difia</div>
+            <p class="project-desc">Berikut ini adalah projek yang saya buat tampilan desain website E-commerce Tas Difia</p>
+            <div class="project-tech"><span class="tech-pill">Figma</span></div>
           </div>
         </div>
       </div>
@@ -757,16 +834,15 @@
         <div class="project-card">
           <div class="project-img">
             <div class="project-img-placeholder">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              <span>images/project2.jpg</span>
+              <span><img src="img/website 2.png" alt=""></span>
             </div>
-            <div class="project-overlay"><a href="#" class="project-link">Lihat →</a></div>
+            <div class="project-overlay"><a href="https://www.figma.com/design/bSsXHS6HgDiBIyPAIbKJAy/Website?node-id=1-5&t=R4v1dppeR6xlttpU-0" class="project-link">Lihat →</a></div>
           </div>
           <div class="project-body">
             <div class="project-tag">UI/UX Design</div>
-            <div class="project-title">Nama Projek 2</div>
-            <p class="project-desc">Deskripsi singkat projek kamu. Ceritakan apa yang dibuat dan untuk siapa.</p>
-            <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Canva</span></div>
+            <div class="project-title">E-Commerce Website Bunga</div>
+            <p class="project-desc">Berikut ini adalah projek yang saya buat tampilan desain website E-commerce Bunga</p>
+            <div class="project-tech"><span class="tech-pill">Figma</span></div>
           </div>
         </div>
       </div>
@@ -774,22 +850,21 @@
         <div class="project-card">
           <div class="project-img">
             <div class="project-img-placeholder">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-              <span>images/project3.jpg</span>
+              <span><img src="img/konten.jpeg" alt=""></span>
             </div>
-            <div class="project-overlay"><a href="#" class="project-link">Lihat →</a></div>
+            <div class="project-overlay"><a href="https://www.instagram.com/reel/DNSjN5_TLxt/?igsh=MWs0OHpzdGdxMXJtMw==" class="project-link">Lihat →</a></div>
           </div>
           <div class="project-body">
-            <div class="project-tag">Content & SEO</div>
-            <div class="project-title">Nama Projek 3</div>
-            <p class="project-desc">Deskripsi singkat projek kamu. Ceritakan apa yang dibuat dan untuk siapa.</p>
-            <div class="project-tech"><span class="tech-pill">SEO</span><span class="tech-pill">CapCut</span><span class="tech-pill">Canva</span></div>
+            <div class="project-tag">Content</div>
+            <div class="project-title">Konten Video Edukasi</div>
+            <p class="project-desc">Berikut ini adalah salah satu content edukasi yang saya buat begitupun pengeditannya</p>
+            <div class="project-tech"><span class="tech-pill">Instagram</span><span class="tech-pill">CapCut</span><span class="tech-pill">Canva</span></div>
           </div>
         </div>
       </div>
     </div>
     <div class="text-center mt-5" data-aos="fade-up">
-      <a href="https://github.com/[username]" target="_blank" class="btn-outline-custom">
+      <a href="https://github.com/Khnsbl" target="_blank" class="btn-outline-custom">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
         Lihat Semua di GitHub
       </a>
@@ -807,81 +882,225 @@
         <p style="color:var(--muted);margin-top:0.75rem;font-weight:300;font-size:0.9rem;">Bukti komitmen saya dalam terus belajar dan berkembang</p>
       </div>
     </div>
-    <div class="row g-3">
-      <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="0">
-        <div class="cert-card">
-          <div class="cert-accent"></div>
-          <div class="cert-img"><div class="cert-img-placeholder">🏆</div></div>
-          <div class="cert-body"><div class="cert-issuer">Nama Platform / Lembaga</div><div class="cert-name">Nama Sertifikat 1</div><div class="cert-date">📅 Bulan Tahun</div></div>
+    <div class="cert-grid">
+      <div class="cert-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-photo-card" style="box-shadow: 0 16px 40px rgba(235,95,160,0.18);">
+          <img src="img/sertifikat1.jpeg" alt="Sertifikat Dicoding 1" class="cert-photo">
+          <div class="cert-overlay cert-overlay-pink"></div>
+          <div class="cert-caption">
+            <div class="cert-tag-pill pink">✦ Certificate</div>
+            <div class="cert-issuer-name">Sertifikat Dicoding</div>
+            <div class="cert-date-row"><span class="cert-verified-badge">✓ Verified</span></div>
+          </div>
         </div>
       </div>
-      <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="80">
-        <div class="cert-card">
-          <div class="cert-accent" style="background: var(--grad-pink);"></div>
-          <div class="cert-img" style="background: var(--pink-100);"><div class="cert-img-placeholder">🎓</div></div>
-          <div class="cert-body"><div class="cert-issuer" style="color:var(--pink-500);">Nama Platform / Lembaga</div><div class="cert-name">Nama Sertifikat 2</div><div class="cert-date">📅 Bulan Tahun</div></div>
+      <div class="cert-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-photo-card" style="box-shadow: 0 16px 40px rgba(235,95,160,0.18);">
+          <img src="img/sertifikat dicoding2.jpeg" alt="Sertifikat Dicoding 2" class="cert-photo">
+          <div class="cert-overlay cert-overlay-pink"></div>
+          <div class="cert-caption">
+            <div class="cert-tag-pill pink">✦ Certificate</div>
+            <div class="cert-issuer-name">Sertifikat Dicoding</div>
+            <div class="cert-date-row"><span class="cert-verified-badge">✓ Verified</span></div>
+          </div>
         </div>
       </div>
-      <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="160">
-        <div class="cert-card">
-          <div class="cert-accent" style="background: linear-gradient(135deg, #ffadd2, #a8c880);"></div>
-          <div class="cert-img" style="background: linear-gradient(135deg, var(--pink-100), var(--matcha-100));"><div class="cert-img-placeholder">📜</div></div>
-          <div class="cert-body"><div class="cert-issuer">Nama Platform / Lembaga</div><div class="cert-name">Nama Sertifikat 3</div><div class="cert-date">📅 Bulan Tahun</div></div>
+      <div class="cert-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-photo-card" style="box-shadow: 0 16px 40px rgba(235,95,160,0.18);">
+          <img src="img/sertifikat dicoding3.jpeg" alt="Sertifikat Dicoding 3" class="cert-photo">
+          <div class="cert-overlay cert-overlay-pink"></div>
+          <div class="cert-caption">
+            <div class="cert-tag-pill pink">✦ Certificate</div>
+            <div class="cert-issuer-name">Sertifikat Dicoding</div>
+            <div class="cert-date-row"><span class="cert-verified-badge">✓ Verified</span></div>
+          </div>
         </div>
       </div>
-      <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="240">
-        <div class="cert-card">
-          <div class="cert-accent" style="background: var(--grad-matcha);"></div>
-          <div class="cert-img" style="background: var(--matcha-100);"><div class="cert-img-placeholder">⭐</div></div>
-          <div class="cert-body"><div class="cert-issuer">Nama Platform / Lembaga</div><div class="cert-name">Nama Sertifikat 4</div><div class="cert-date">📅 Bulan Tahun</div></div>
+      <div class="cert-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-photo-card" style="box-shadow: 0 16px 40px rgba(235,95,160,0.18);">
+          <img src="img/sertifikat dicoding4.jpeg" alt="Sertifikat Dicoding 4" class="cert-photo">
+          <div class="cert-overlay cert-overlay-pink"></div>
+          <div class="cert-caption">
+            <div class="cert-tag-pill pink">✦ Certificate</div>
+            <div class="cert-issuer-name">Sertifikat Dicoding</div>
+            <div class="cert-date-row"><span class="cert-verified-badge">✓ Verified</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cert-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-photo-card" style="box-shadow: 0 16px 40px rgba(235,95,160,0.18);">
+          <img src="img/sertifikat pkl.jpeg" alt="Sertifikat PKL" class="cert-photo">
+          <div class="cert-overlay cert-overlay-pink"></div>
+          <div class="cert-caption">
+            <div class="cert-tag-pill pink">✦ Certificate</div>
+            <div class="cert-issuer-name">Sertifikat PKL PT Maxsamasta Grup</div>
+            <div class="cert-date-row"><span class="cert-verified-badge">✓ Verified</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cert-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-photo-card" style="box-shadow: 0 16px 40px rgba(235,95,160,0.18);">
+          <img src="img/sertifikat juara angkatan smp.jpeg" alt="Juara Umum SMP" class="cert-photo">
+          <div class="cert-overlay cert-overlay-pink"></div>
+          <div class="cert-caption">
+            <div class="cert-tag-pill pink">✦ Certificate</div>
+            <div class="cert-issuer-name">Sertifikat Juara Umum SMP</div>
+            <div class="cert-date-row"><span class="cert-verified-badge">✓ Verified</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cert-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="cert-photo-card" style="box-shadow: 0 16px 40px rgba(235,95,160,0.18);">
+          <img src="img/sertifikat juara kelas smp.jpeg" alt="Juara Kelas SMP" class="cert-photo">
+          <div class="cert-overlay cert-overlay-pink"></div>
+          <div class="cert-caption">
+            <div class="cert-tag-pill pink">✦ Certificate</div>
+            <div class="cert-issuer-name">Sertifikat Juara Kelas SMP</div>
+            <div class="cert-date-row"><span class="cert-verified-badge">✓ Verified</span></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ==================== CONTACT — PREMIUM ==================== -->
 <section id="contact">
-  <div class="contact-greeting">Let's Talk</div>
-  <div class="container" style="position:relative;z-index:1;">
+  <!-- Ambient orbs -->
+  <div class="contact-orb orb-1"></div>
+  <div class="contact-orb orb-2"></div>
+  <div class="contact-orb orb-3"></div>
+
+  <!-- Watermark -->
+  <div class="contact-watermark">Let's Talk</div>
+
+  <div class="container contact-inner">
     <div class="row g-5 align-items-center">
-      <div class="col-lg-5" data-aos="fade-right">
-        <div class="section-label">Kontak</div>
-        <h2 class="section-title" style="color:white;">Yuk, Kita <span class="accent">Berkolaborasi</span></h2>
-        <p class="contact-desc mt-3">Punya projek keren? Butuh desainer atau developer? Atau sekadar ingin say hello? Saya selalu terbuka untuk diskusi dan kesempatan baru.</p>
-        <div class="d-flex gap-3 mt-4">
-          <a href="#" style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(247,127,190,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+
+      <!-- LEFT: intro -->
+      <div class="col-lg-5" data-aos="fade-right" data-aos-duration="800">
+        <div class="contact-left-label">Kontak</div>
+
+        <h2 class="contact-heading">
+          Yuk, Kita<br>
+          <span class="c-accent">Berkolaborasi</span>
+        </h2>
+
+        <p class="contact-tagline">
+          Punya projek keren? Butuh desainer atau developer? Atau sekadar ingin say hello? Saya selalu terbuka untuk diskusi dan kesempatan baru.
+        </p>
+
+        <!-- Availability badge -->
+        <div class="contact-avail-chip">
+          <div class="avail-pulse"></div>
+          <span class="avail-text">Open to Opportunities</span>
+        </div>
+
+        <!-- Social icons -->
+        <div class="contact-socials">
+          <a href="https://instagram.com/khaerun_023" target="_blank" class="social-icon-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
           </a>
-          <a href="#" style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(247,127,190,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a href="https://github.com/[username]" target="_blank" style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(247,127,190,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <a href="https://github.com/Khnsbl" target="_blank" class="social-icon-btn" aria-label="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
           </a>
         </div>
       </div>
-      <div class="col-lg-6 offset-lg-1" data-aos="fade-left" data-aos-delay="100">
-        <a href="mailto:khaerunn2304@gmail.com" class="contact-link">
-          <div class="contact-link-icon" style="background:rgba(247,127,190,0.15);">📧</div>
-          <div class="contact-link-text"><div class="contact-link-label">Email</div><div class="contact-link-value">khaerunn2304@gmail.com</div></div>
-          <div class="contact-link-arrow">→</div>
-        </a>
-        <a href="https://wa.me/628xxxxxxxxxx" target="_blank" class="contact-link">
-          <div class="contact-link-icon" style="background:rgba(122,170,82,0.15);">💬</div>
-          <div class="contact-link-text"><div class="contact-link-label">WhatsApp</div><div class="contact-link-value">+62 8xx xxxx xxxx</div></div>
-          <div class="contact-link-arrow">→</div>
-        </a>
-        <a href="https://instagram.com/khaerun_023" target="_blank" class="contact-link">
-          <div class="contact-link-icon" style="background:rgba(247,127,190,0.15);">📸</div>
-          <div class="contact-link-text"><div class="contact-link-label">Instagram</div><div class="contact-link-value">@khaerun_023</div></div>
-          <div class="contact-link-arrow">→</div>
-        </a>
-        <a href="https://linkedin.com/in/[username]" target="_blank" class="contact-link">
-          <div class="contact-link-icon" style="background:rgba(0,114,177,0.15);">💼</div>
-          <div class="contact-link-text"><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">linkedin.com/in/username</div></div>
-          <div class="contact-link-arrow">→</div>
-        </a>
+
+      <!-- RIGHT: contact cards -->
+      <div class="col-lg-6 offset-lg-1" data-aos="fade-left" data-aos-duration="800" data-aos-delay="100">
+        <div class="contact-cards-wrap">
+
+          <!-- Email -->
+          <a href="mailto:khaerunn2304@gmail.com" class="contact-card card-email">
+            <div class="contact-card-icon icon-email">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#eb5fa0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="contact-card-text">
+              <div class="contact-card-label">Email</div>
+              <div class="contact-card-value">khaerunn2304@gmail.com</div>
+            </div>
+            <div class="contact-card-arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <!-- WhatsApp -->
+          <a href="https://wa.me/6285881564705" target="_blank" class="contact-card card-wa">
+            <div class="contact-card-icon icon-wa">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </div>
+            <div class="contact-card-text">
+              <div class="contact-card-label">WhatsApp</div>
+              <div class="contact-card-value">+62 858 8156 4705</div>
+            </div>
+            <div class="contact-card-arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <!-- Instagram -->
+          <a href="https://instagram.com/khaerun_023" target="_blank" class="contact-card card-ig">
+            <div class="contact-card-icon icon-ig">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                  <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f09433"/>
+                    <stop offset="25%" stop-color="#e6683c"/>
+                    <stop offset="50%" stop-color="#dc2743"/>
+                    <stop offset="75%" stop-color="#cc2366"/>
+                    <stop offset="100%" stop-color="#bc1888"/>
+                  </linearGradient>
+                </defs>
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </div>
+            <div class="contact-card-text">
+              <div class="contact-card-label">Instagram</div>
+              <div class="contact-card-value">@khaerun_023</div>
+            </div>
+            <div class="contact-card-arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+<!-- Linktree -->
+<a href="https://linktr.ee/Khaerunnisasalsabila" target="_blank" class="contact-card card-li">
+  <div class="contact-card-icon icon-li">
+    <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="12" fill="#3DB84A"/>
+      <g fill="white" transform="translate(22, 21)">
+        <rect x="-2.2" y="-9" width="4.4" height="18" rx="2.2"/>
+        <rect x="-2.2" y="-9" width="4.4" height="18" rx="2.2" transform="rotate(60)"/>
+        <rect x="-2.2" y="-9" width="4.4" height="18" rx="2.2" transform="rotate(120)"/>
+      </g>
+      <!-- Titik bawah -->
+      <circle cx="22" cy="34" r="2.5" fill="white"/>
+    </svg>
+  </div>
+  <div class="contact-card-text">
+    <div class="contact-card-label">Linktree</div>
+    <div class="contact-card-value">https://linktr.ee/Khaerunnisasalsabila</div>
+  </div>
+  <div class="contact-card-arrow">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </div>
+</a>
+
+        </div>
       </div>
     </div>
   </div>
@@ -910,7 +1129,7 @@
     requestAnimationFrame(animRing);
   }
   animRing();
-  document.querySelectorAll('a, button, .project-card, .cert-card, .mq-item').forEach(el => {
+  document.querySelectorAll('a, button, .project-card, .cert-photo-card, .mq-item, .contact-card').forEach(el => {
     el.addEventListener('mouseenter', () => { ring.style.width = '50px'; ring.style.height = '50px'; ring.style.borderColor = 'var(--matcha-400)'; });
     el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'var(--pink-400)'; });
   });
