@@ -42,11 +42,10 @@
       --radius-lg: 32px;
     }
 
-    /* ===== FIX UTAMA: Cegah horizontal scroll ===== */
     html {
       scroll-behavior: smooth;
       font-size: 16px;
-      overflow-x: hidden; /* <-- TAMBAHAN FIX */
+      overflow-x: hidden;
     }
     body {
       font-family: 'DM Sans', sans-serif;
@@ -54,7 +53,7 @@
       color: var(--text);
       overflow-x: hidden;
       cursor: none;
-      max-width: 100vw; /* <-- TAMBAHAN FIX */
+      max-width: 100vw;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,23 +63,47 @@
     .cursor-ring { width: 36px; height: 36px; border: 2px solid var(--pink-400); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99998; transition: all 0.18s ease; opacity: 0.6; }
     body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 80% 50% at 10% 20%, rgba(247,127,190,0.08) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 90% 80%, rgba(122,170,82,0.07) 0%, transparent 60%); pointer-events: none; z-index: 0; }
 
-    /* NAVBAR */
-    .navbar { background: rgba(253,248,244,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(247,127,190,0.15); padding: 0.75rem 0; position: sticky; top: 0; z-index: 1000; }
+    /* ===== NAVBAR — STICKY FIX ===== */
+    .navbar {
+      background: rgba(253,248,244,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(247,127,190,0.15);
+      padding: 0.75rem 0;
+
+      /* Kunci navbar diam di atas */
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 9999 !important;  /* lebih tinggi dari semua section */
+
+      transition: padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    }
+    /* Tambah shadow saat di-scroll */
+    .navbar.scrolled {
+      padding: 0.45rem 0;
+      background: rgba(253,248,244,0.98);
+      box-shadow: 0 4px 20px rgba(26,26,46,0.08);
+    }
+
     .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.25rem; background: var(--grad-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.02em; }
     .nav-link { font-size: 0.8rem; font-weight: 500; color: var(--muted) !important; letter-spacing: 0.05em; text-transform: uppercase; position: relative; padding: 0.35rem 0.7rem !important; transition: color 0.3s; }
     .nav-link::after { content: ''; position: absolute; bottom: 0; left: 50%; right: 50%; height: 2px; background: var(--grad-pink); border-radius: 2px; transition: all 0.3s ease; }
     .nav-link:hover { color: var(--pink-500) !important; }
     .nav-link:hover::after { left: 0.7rem; right: 0.7rem; }
 
-    /* HERO */
+    /* Offset konten agar tidak ketutup navbar fixed */
     #hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
       position: relative;
-      overflow: hidden; /* <-- FIX: cegah blob meluber */
-      padding: 6rem 0 4rem;
+      overflow: hidden;
+      padding: 8rem 0 4rem; /* padding-top lebih besar karena navbar fixed */
     }
+
     .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.35; animation: float-blob 8s ease-in-out infinite; }
     .blob-1 { width: 350px; height: 350px; background: radial-gradient(circle, var(--pink-300), var(--pink-400)); top: -80px; right: -60px; }
     .blob-2 { width: 250px; height: 250px; background: radial-gradient(circle, var(--matcha-200), var(--matcha-300)); bottom: 40px; left: -40px; animation-delay: -3s; }
@@ -123,7 +146,7 @@
     .stat-label { font-size: 0.72rem; color: var(--muted); font-weight: 500; margin-top: 0.15rem; }
 
     /* SECTION SHARED */
-    section { position: relative; z-index: 1; overflow-x: hidden; } /* <-- FIX */
+    section { position: relative; z-index: 1; overflow-x: hidden; }
     .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink-500); display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
     .section-label::before { content: ''; width: 26px; height: 2px; background: var(--grad-pink); border-radius: 2px; }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.6rem); font-weight: 900; line-height: 1.15; letter-spacing: -0.025em; color: var(--dark); }
@@ -137,14 +160,14 @@
         #d068a8 24%, #a83880 33%, #781858 43%, #4e0a38 52%,
         #781858 62%, #a83880 72%, #d068a8 82%, #f5c8e4 92%, #fff0f5 100%
       );
-      overflow: hidden; /* <-- FIX */
+      overflow: hidden;
     }
     #about::before { content: ''; position: absolute; top: 32%; left: -100px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(247,127,190,0.12) 0%, transparent 65%); pointer-events: none; }
     #about::after { content: ''; position: absolute; bottom: -80px; right: -60px; width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, rgba(100,60,160,0.12) 0%, transparent 65%); pointer-events: none; }
 
     .about-hello {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(4rem, 14vw, 12rem); /* <-- FIX: clamp agar tidak meluber di mobile */
+      font-size: clamp(4rem, 14vw, 12rem);
       font-weight: 900;
       line-height: 0.85;
       position: absolute;
@@ -160,8 +183,8 @@
       background-clip: text;
       -webkit-text-stroke: 1.5px rgba(255,160,210,0.35);
       filter: drop-shadow(0 0 40px rgba(247,127,190,0.3));
-      max-width: 100%; /* <-- FIX */
-      overflow: hidden; /* <-- FIX */
+      max-width: 100%;
+      overflow: hidden;
     }
 
     .about-photo-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
@@ -207,7 +230,7 @@
     /* SKILLS */
     #skills { padding: 5rem 0 6rem; background: linear-gradient(180deg, #fff0f5 0%, #fdf8f4 30%, #e8f0e0 100%); overflow: hidden; }
     .skills-header { text-align: center; margin-bottom: 3rem; position: relative; z-index: 1; }
-    .marquee-outer { position: relative; overflow: hidden; padding: 0.75rem 0 0.5rem; width: 100%; } /* <-- FIX: width 100% */
+    .marquee-outer { position: relative; overflow: hidden; padding: 0.75rem 0 0.5rem; width: 100%; }
     .marquee-outer::before, .marquee-outer::after { content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none; }
     .marquee-outer::before { left: 0; background: linear-gradient(to right, #fff0f5 0%, transparent 100%); }
     .marquee-outer::after { right: 0; background: linear-gradient(to left, #e8f0e0 0%, transparent 100%); }
@@ -273,7 +296,7 @@
       padding: 7rem 0;
       background: #0f0f1a;
       position: relative;
-      overflow: hidden; /* <-- FIX */
+      overflow: hidden;
     }
     #contact::before {
       content: '';
@@ -478,7 +501,7 @@
     .icon-ig      { background: linear-gradient(135deg, rgba(193,53,132,0.22), rgba(253,29,29,0.12)); border: 1px solid rgba(193,53,132,0.35); }
     .icon-li      { background: linear-gradient(135deg, rgba(0,119,181,0.22), rgba(0,119,181,0.1)); border: 1px solid rgba(0,119,181,0.3); }
 
-    .contact-card-text { flex: 1; position: relative; z-index: 1; min-width: 0; } /* <-- FIX: min-width: 0 agar teks bisa truncate */
+    .contact-card-text { flex: 1; position: relative; z-index: 1; min-width: 0; }
     .contact-card-label {
       font-size: 0.65rem;
       font-weight: 600;
@@ -492,9 +515,9 @@
       font-weight: 600;
       color: rgba(255,255,255,0.88);
       letter-spacing: 0.01em;
-      overflow: hidden;         /* <-- FIX */
-      text-overflow: ellipsis;  /* <-- FIX */
-      white-space: nowrap;      /* <-- FIX */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .contact-card-arrow {
@@ -519,7 +542,7 @@
 
     .contact-watermark {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 6vw, 8rem); /* <-- FIX: clamp agar tidak meluber */
+      font-size: clamp(2rem, 6vw, 8rem);
       font-weight: 900;
       line-height: 1;
       color: rgba(255,255,255,0.025);
@@ -530,8 +553,8 @@
       pointer-events: none;
       user-select: none;
       white-space: nowrap;
-      overflow: hidden; /* <-- FIX */
-      max-width: 100%; /* <-- FIX */
+      overflow: hidden;
+      max-width: 100%;
     }
 
     .contact-orb {
@@ -576,7 +599,7 @@
       .hero-badge.badge-1 { left: 0; bottom: 8px; }
       .hero-badge.badge-2 { right: 0; top: 8px; }
       .hero-stats { gap: 1.2rem; }
-      .about-hello { font-size: 4rem; top: 0.5rem; } /* <-- FIX lebih kecil di mobile */
+      .about-hello { font-size: 4rem; top: 0.5rem; }
       .about-photo-frame { width: 150px; height: 188px; }
       .about-bottom-grid { grid-template-columns: 1fr; }
       .about-main-card { padding: 1.4rem; }
@@ -584,7 +607,6 @@
       .marquee-outer::before, .marquee-outer::after { width: 50px; }
       .contact-card { padding: 0.9rem 1rem; }
       .contact-card-value { font-size: 0.8rem; }
-      /* FIX: sembunyikan watermark di mobile agar tidak meluber */
       .contact-watermark { display: none; }
     }
 
@@ -604,7 +626,7 @@
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" id="mainNavbar">
   <div class="container">
     <a class="navbar-brand" href="#hero">✦ Khaerunnisa</a>
     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="color: var(--pink-500);">
@@ -1127,6 +1149,7 @@
 <script>
   AOS.init({ duration: 700, easing: 'ease-out-cubic', once: true, offset: 60 });
 
+  // CURSOR
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
@@ -1145,12 +1168,24 @@
     el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'var(--pink-400)'; });
   });
 
+  // SCROLL PROGRESS
   const bar = document.getElementById('scrollProgress');
   window.addEventListener('scroll', () => {
     const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
     bar.style.width = pct + '%';
   });
 
+  // NAVBAR: tambah class .scrolled saat di-scroll
+  const navbar = document.getElementById('mainNavbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  // ACTIVE NAV LINK saat scroll
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
   const navObs = new IntersectionObserver(entries => {
@@ -1162,13 +1197,8 @@
         });
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.4 });
   sections.forEach(s => navObs.observe(s));
-
-  const navbar = document.querySelector('.navbar');
-  window.addEventListener('scroll', () => {
-    navbar.style.padding = window.scrollY > 50 ? '0.5rem 0' : '0.75rem 0';
-  });
 </script>
 </body>
 </html>
